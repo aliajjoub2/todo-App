@@ -3,14 +3,12 @@
 import 'package:flutter/material.dart';
 import 'package:todo/widgets/todo-card.dart';
 
-
 void main() {
   runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
-
 
   @override
   Widget build(BuildContext context) {
@@ -21,13 +19,10 @@ class MyApp extends StatelessWidget {
   }
 }
 
-
-
 class TodoApp extends StatefulWidget {
   const TodoApp({Key? key}) : super(key: key);
 
   // ignore: non_constant_identifier_names
-
 
   @override
   State<TodoApp> createState() => _TodoAppState();
@@ -43,18 +38,54 @@ class Task {
     required this.status,
   });
 }
-List allTasks =[
-Task(title: "creat videos", status: false),
-Task(title: "creat lesson", status: false),
-Task(title: "creat article", status: false),
-Task(title: "creat game", status: true),
 
+List allTasks = [
+  Task(title: "creat videos", status: true),
+  Task(title: "creat lesson", status: false),
+  Task(title: "creat article", status: false),
+  Task(title: "creat game", status: true),
 ];
 
 class _TodoAppState extends State<TodoApp> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButton: FloatingActionButton(
+        
+        onPressed: () {
+        showModalBottomSheet(
+            context: context,
+            builder: (BuildContext context) {
+              return Container(
+                padding: EdgeInsets.all(22),
+                height: double.infinity,
+
+                color: Colors.amber[200],
+                // ignore: prefer_const_literals_to_create_immutables
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                  TextField(
+                    maxLength: 20,
+                    decoration: InputDecoration(hintText: 'add neu Task'),
+                  ),
+                  TextButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                      child: Text(
+                        'Add',
+                        style: TextStyle(fontSize: 22),
+                      ))
+                ]),
+              );
+            });
+      },
+      child: const Icon(
+                        Icons.add,
+                        color: Colors.black,
+                      ),
+      ),
       backgroundColor: Color.fromRGBO(58, 66, 86, 0.7),
       appBar: AppBar(
         elevation: 0,
@@ -74,13 +105,8 @@ class _TodoAppState extends State<TodoApp> {
           children: [
             //Todecard(),
 
-            ...allTasks.map((item) => Todecard(
-              vartitle: item.title
-            ))
-          
-
-          
-          
+            ...allTasks.map(
+                (item) => Todecard(vartitle: item.title, doOrNot: item.status))
           ],
         ),
       ),

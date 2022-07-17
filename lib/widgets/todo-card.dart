@@ -3,10 +3,9 @@
 import 'package:flutter/material.dart';
 
 class Todecard extends StatelessWidget {
-    final String vartitle;
-  const Todecard({Key? key, required this.vartitle}) : super(key: key);
-
-
+  final String vartitle;
+  final bool doOrNot;
+  const Todecard({Key? key, required this.vartitle, required this.doOrNot}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +23,7 @@ class Todecard extends StatelessWidget {
               style: TextStyle(color: Colors.white, fontSize: 22),
             ),
             Icon(
-              Icons.close,
+              doOrNot? Icons.check : Icons.close,
               size: 27,
               color: Colors.red,
             )
