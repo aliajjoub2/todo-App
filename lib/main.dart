@@ -47,44 +47,57 @@ List allTasks = [
 ];
 
 class _TodoAppState extends State<TodoApp> {
+  addTask() {
+    setState(() {
+      allTasks.add(Task(title: myController.text, status: false));
+    });
+  }
+
+  final myController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
-        
         onPressed: () {
-        showModalBottomSheet(
-            context: context,
-            builder: (BuildContext context) {
-              return Container(
-                padding: EdgeInsets.all(22),
-                height: double.infinity,
-
-                color: Colors.amber[200],
-                // ignore: prefer_const_literals_to_create_immutables
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                  TextField(
-                    maxLength: 20,
-                    decoration: InputDecoration(hintText: 'add neu Task'),
+          showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return Dialog(
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(100) ),
+                  backgroundColor: Color.fromARGB(3, 213, 229, 245),
+                  child: Container(
+                    padding: EdgeInsets.all(22),
+                    width: 200,
+                    height: 200,
+                
+                    color: Color.fromARGB(255, 209, 200, 252),
+                    // ignore: prefer_const_literals_to_create_immutables
+                    child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          TextField(
+                            controller: myController,
+                            maxLength: 40,
+                            decoration: InputDecoration(hintText: 'add neu Task'),
+                          ),
+                          TextButton(
+                              onPressed: () {
+                                addTask();
+                                Navigator.pop(context);
+                              },
+                              child: Text(
+                                'Add',
+                                style: TextStyle(fontSize: 22),
+                              ))
+                        ]),
                   ),
-                  TextButton(
-                      onPressed: () {
-                        Navigator.pop(context);
-                      },
-                      child: Text(
-                        'Add',
-                        style: TextStyle(fontSize: 22),
-                      ))
-                ]),
-              );
-            });
-      },
-      child: const Icon(
-                        Icons.add,
-                        color: Colors.black,
-                      ),
+                );
+              });
+        },
+        child: const Icon(
+          Icons.add,
+          color: Colors.black,
+        ),
       ),
       backgroundColor: Color.fromRGBO(58, 66, 86, 0.7),
       appBar: AppBar(
