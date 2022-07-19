@@ -1,6 +1,8 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
+import 'package:todo/widgets/Counter.dart';
+
 import 'package:todo/widgets/todo-card.dart';
 
 void main() {
@@ -40,9 +42,9 @@ class Task {
 }
 
 List allTasks = [
-  Task(title: "creat videos", status: true),
-  Task(title: "creat lesson", status: false),
-  Task(title: "creat article", status: false),
+  Task(title: "creat videos", status: false),
+  Task(title: "creat lesson", status: true),
+  Task(title: "creat article", status: true),
   Task(title: "creat game", status: true),
 ];
 
@@ -54,6 +56,20 @@ class _TodoAppState extends State<TodoApp> {
   }
 
   final myController = TextEditingController();
+
+  int calculateCompletedTasks() {
+    int completedTasks = 0;
+
+    // ignore: avoid_function_literals_in_foreach_calls
+    allTasks.forEach((item) {
+      if (item.status) {
+        completedTasks++;
+      }
+    });
+
+    return completedTasks;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -63,13 +79,14 @@ class _TodoAppState extends State<TodoApp> {
               context: context,
               builder: (BuildContext context) {
                 return Dialog(
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(100) ),
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(100)),
                   backgroundColor: Color.fromARGB(3, 213, 229, 245),
                   child: Container(
                     padding: EdgeInsets.all(22),
                     width: 200,
                     height: 200,
-                
+
                     color: Color.fromARGB(255, 209, 200, 252),
                     // ignore: prefer_const_literals_to_create_immutables
                     child: Column(
@@ -78,7 +95,8 @@ class _TodoAppState extends State<TodoApp> {
                           TextField(
                             controller: myController,
                             maxLength: 40,
-                            decoration: InputDecoration(hintText: 'add neu Task'),
+                            decoration:
+                                InputDecoration(hintText: 'add neu Task'),
                           ),
                           TextButton(
                               onPressed: () {
@@ -116,10 +134,22 @@ class _TodoAppState extends State<TodoApp> {
           crossAxisAlignment: CrossAxisAlignment.center,
           // ignore: prefer_const_literals_to_create_immutables
           children: [
+            Counter(
+                myAllTask: allTasks.length,
+                myTaskdone: calculateCompletedTasks()),
             //Todecard(),
 
-            ...allTasks.map(
-                (item) => Todecard(vartitle: item.title, doOrNot: item.status))
+            Container(
+              margin: EdgeInsets.all(10),
+              height: 550,
+              child: ListView.builder(
+                  itemCount: allTasks.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    return Todecard(
+                        vartitle: allTasks[index].title,
+                        doOrNot: allTasks[index].status);
+                  }),
+            ),
           ],
         ),
       ),
