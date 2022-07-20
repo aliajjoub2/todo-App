@@ -70,6 +70,24 @@ class _TodoAppState extends State<TodoApp> {
     return completedTasks;
   }
 
+  delete(index) {
+    setState(() {
+      allTasks.remove(allTasks[index]);
+    });
+  }
+
+  deleteAll() {
+    setState(() {
+      allTasks.removeRange(0, allTasks.length);
+    });
+  }
+
+  changeStatus(int index) {
+    setState(() {
+      allTasks[index].status = !allTasks[index].status;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -119,6 +137,18 @@ class _TodoAppState extends State<TodoApp> {
       ),
       backgroundColor: Color.fromRGBO(58, 66, 86, 0.7),
       appBar: AppBar(
+        actions: [
+          // start search bottom
+          IconButton(
+            onPressed: () {
+              deleteAll();
+            },
+            icon: Icon(
+              Icons.delete_forever_outlined,
+              color: Colors.blueAccent,
+            ),
+          ),
+        ],
         elevation: 0,
         backgroundColor: Color.fromRGBO(58, 66, 86, 1),
         title: Text(
@@ -146,8 +176,12 @@ class _TodoAppState extends State<TodoApp> {
                   itemCount: allTasks.length,
                   itemBuilder: (BuildContext context, int index) {
                     return Todecard(
-                        vartitle: allTasks[index].title,
-                        doOrNot: allTasks[index].status);
+                      vartitle: allTasks[index].title,
+                      doOrNot: allTasks[index].status,
+                      index: index,
+                      changeStatus: changeStatus,
+                      delete: delete,
+                    );
                   }),
             ),
           ],
